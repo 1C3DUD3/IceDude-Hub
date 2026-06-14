@@ -32,14 +32,51 @@ esp={}
 local connections={}
 local espActivated={
 Universal={
-Player={Enabled=false,Color=Color3.from(255,255,255)}
+Player={Enabled=false,Color=Color3.fromRGB(255,255,255)}
 }
 }
-local toggles={
-HumSpeed
+local values={
+HumSpeed = -1,
+HumJP = -1
 }
+local self=game.Players.LocalPlayee
 
 local v0 = Window:CreateTab("Forsaken", 4483362458)
+
+v0:CreateInput({
+   Name = "WalkSpeed (-1 to disable)",
+   CurrentValue = "-1",
+   PlaceholderText = "Input Placeholder",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Input1",
+   Callback = function(Text)
+       values.HumSpeed = tonumber(Text)
+   end,
+})
+
+if self.Character.Humanoid.UseJumpPower then
+v0:CreateInput({
+   Name = "JumpPower (-1 to disable)",
+   CurrentValue = "-1",
+   PlaceholderText = "Input Placeholder",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Input1",
+   Callback = function(Text)
+       values.HumJP = tonumber(Text)
+   end,
+})
+else
+v0:CreateInput({
+   Name = "JumpHeight (-1 to disable)",
+   CurrentValue = "-1",
+   PlaceholderText = "Input Placeholder",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Input1",
+   Callback = function(Text)
+       values.HumJP = tonumber(Text)
+   end,
+})
+end
 
 v0:CreateSection("ESP")
 
@@ -85,5 +122,18 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     espObj:Destroy()
     storedAssets.esp[player] = nil
         end
+    end
+
+    if typeof(tonumber(values.HumSpeed)) == "number" and values.HumSpeed ~= -1then
+      self.Character.Humanoid.WalkSpeed = tonumber(values.HumSpeed)
+
+   end
+
+    if typeof(tonumber(values.HumJP)) == "number" and values.HumJP ~= -1 then
+       if self.Character.Humanoid.UseJumpPowerthen
+          self.Character.Humanoid.JumpPower = tonumber(values.HumJP)
+      else
+          self.Character.Humanoid.JunpHeight = tonumber(values.HumJP)
+      end
     end
 end)

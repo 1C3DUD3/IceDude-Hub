@@ -1,0 +1,22 @@
+return {
+esp = function(obj,color,text)
+   if obj:FindFirstChild("IceESP") then
+      obj.IceESP.BB.TextLabel.Text = text
+   else
+      local folder = Instance.new("Folder", obj)
+      folder.Name = "IceESP"
+      local h = Instance.new("Highlight",folder)
+      h.FillColor = color
+      h.Adornee = obj
+      local bb = Instance.new("BillboardGui",folder)
+      bb.Name = "BB"
+      bb.Size = UDim2.new(0,200,0,50)
+      bb.AlwaysOnTop = true
+      bb.Adornee = obj
+      local label = Instance.new("TextLabel",bb)
+      label.Text = text
+      label.BackgroundTransparency = 1
+      label.TextScaled = true
+   end
+end
+}

@@ -40,7 +40,7 @@ local v0 = Window:CreateTab("Forsaken", 4483362458) -- Title, Image
 v0:CreateToggle({
    Name = "Player ESP",
    CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file; make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Toggle1",
    Callback = function(Value)
       espActivated.Universal.Player.Enabled=Value
    end,
@@ -50,7 +50,7 @@ v0:CreateToggle({
 v0:CreateButton({
    Name = "Remove IceDude Exploits",
    Callback = function()
-       for _,v in pairs(connections)
+       for _,v in pairs(connections) do
           v:Disconnect()
           v = nil
        end
@@ -61,13 +61,12 @@ v0:CreateButton({
 connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     if espActivated.Universal.Player.Enabled == true then
        for _,v in pairs(game.Players:GetPlayers()) do
-          storedAssets.esp["pESP"] = esp.esp(v.Character,espActivated.Universal.Player.Color,plr.DisplayName)
+          storedAssets.esp[v] = esp.esp(v.Character,espActivated.Universal.Player.Color,v.DisplayName)
        end
     else
-        for i,v in pairs(storedAssets.esp) do
-           if i=="pESP" then
-              v:Destroy()
-           end
+        for player, espObj in pairs(storedAssets.esp) do
+    espObj:Destroy()
+    storedAssets.esp[player] = nil
         end
     end
 end)

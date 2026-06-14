@@ -24,6 +24,11 @@ local Window = Rayfield:CreateWindow({
    KeySystem = false, -- Set this to true to use our key system
 })
 
+local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/1C3DUD3/IceDude-Hub/refs/heads/main/esp"))()
+
+local storedAssets={
+esp={}
+}
 local connections={}
 local espActivated={
 Universal={
@@ -33,11 +38,11 @@ Player={Enabled=true,Color=Color3.new(1,1,1)}
 
 local v0 = Window:CreateTab("Forsaken", 4483362458) -- Title, Image
 v0:CreateToggle({
-   Name = "Player ESO",
+   Name = "Player ESP",
    CurrentValue = false,
    Flag = "Toggle1", -- A flag is the identifier for the configuration file; make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-      espActivated.Universal.Player.Enabled=true
+      espActivated.Universal.Player.Enabled=Value
    end,
 })
 
@@ -55,6 +60,14 @@ v0:CreateButton({
 
 connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     if espActivated.Universal.Player.Enabled == true then
-       
+       for _,v in pairs(game.Players:GetPlayers()) do
+          storedAssets.esp["pESP"] = esp.esp(v.Character,espActivated.Universal.Player.Color,plr.DisplayName)
+       end
+    else
+        for i,v in pairs(storedAssets.esp) do
+           if i=="pESP" then
+              v:Destroy()
+           end
+        end
     end
 end)

@@ -17,6 +17,7 @@ esp = function(obj,color,text)
       label.Text = text
       label.BackgroundTransparency = 1
       label.TextScaled = true
+      label.Size = UDim2.new(1,0,1,0)
       return folder
    end
 end

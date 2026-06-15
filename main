@@ -58,7 +58,7 @@ HumJP = -1
 
 local self=game.Players.LocalPlayer
 
-local v0 = Window:CreateTab("Forsaken", 4483362458)
+local v0 = Window:CreateTab("Universal", 4483362458)
 
 v0:CreateSection("Humanoid")
 
@@ -156,6 +156,8 @@ v0:CreateButton({
        Rayfield:Destroy()
    end,
 })
+
+local v1 = Window:CreateTab("Forsaken", 4483362458)
 
 connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     if espActivated.Universal.Player.Enabled == true then

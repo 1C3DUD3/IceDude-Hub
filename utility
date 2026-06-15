@@ -1,0 +1,8 @@
+return {
+distance = function(o1,o2)
+   return (o1:GetPivot().Position - o2:GetPivot().Position).Magnitude
+end,
+displayMatchesUser = function(plr)
+   return plr.DisplayName == plr.Name
+end
+}

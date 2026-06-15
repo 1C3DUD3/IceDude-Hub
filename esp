@@ -3,6 +3,7 @@ esp = function(obj,color,text)
    if obj:FindFirstChild("IceESP") then
       obj.IceESP.BB.TextLabel.Text = text
       obj.IceESP.BB.TextLabel.TextColor3 = color
+      obj.IceESP.Highlight.FillColor = color
       return obj.IceESP
    else
       local folder = Instance.new("Folder", obj)

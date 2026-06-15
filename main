@@ -1,10 +1,11 @@
 local s,e = pcall(function()
    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-end
+end)
 
 if not s then
    local traceback = debug.traceback("RAYFIELD FAILED TO LOAD: ", 2)
    print(traceback)
+   return
 else
    print("LOADED RAYFIELD!")
 end
@@ -52,7 +53,7 @@ HumSpeed = -1,
 HumJP = -1
 }
 
-local self=game.Players.LocalPlayee
+local self=game.Players.LocalPlayer
 
 local v0 = Window:CreateTab("Forsaken", 4483362458)
 
@@ -140,7 +141,9 @@ v0:CreateButton({
 connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     if espActivated.Universal.Player.Enabled == true then
        for _,v in pairs(game.Players:GetPlayers()) do
-          storedAssets.esp[v] = esp.esp(v.Character,espActivated.Universal.Player.Color,v.DisplayName)
+          if not storedAssets.esp[v] then
+             storedAssets.esp[v] = esp.esp(v.Character,espActivated.Universal.Player.Color,v.DisplayName)
+          end
        end
     else
         for player, espObj in pairs(storedAssets.esp) do
@@ -149,16 +152,16 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
         end
     end
 
-    if typeof(tonumber(values.HumSpeed)) == "number" and values.HumSpeed ~= -1then
+    if typeof(tonumber(values.HumSpeed)) == "number" and values.HumSpeed ~= -1 then
       self.Character.Humanoid.WalkSpeed = tonumber(values.HumSpeed)
 
    end
 
     if typeof(tonumber(values.HumJP)) == "number" and values.HumJP ~= -1 then
-       if self.Character.Humanoid.UseJumpPowerthen
+       if self.Character.Humanoid.UseJumpPower then
           self.Character.Humanoid.JumpPower = tonumber(values.HumJP)
       else
-          self.Character.Humanoid.JunpHeight = tonumber(values.HumJP)
+          self.Character.Humanoid.JumpHeight = tonumber(values.HumJP)
       end
     end
 end)

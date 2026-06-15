@@ -1,5 +1,7 @@
+local Rayfield
+
 local s,e = pcall(function()
-   local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+   Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 end)
 
 if not s then
@@ -123,7 +125,9 @@ v0:CreateInput({
    RemoveTextAfterFocusLost = false,
    Flag = "InputGravity",
    Callback = function(Text)
-       workspace.Gravity = tonumber(Text)
+       if tonumber(Text) ~= -1 then
+           workspace.Gravity = tonumber(Text)
+       end
    end,
 })
 
@@ -133,6 +137,18 @@ v0:CreateButton({
        for _,v in pairs(connections) do
           v:Disconnect()
           v = nil
+       end
+
+       for i,v in pairs(storedAssets) do
+          if typeof(v) == "table" then
+             for i2,v2 in pairs(v) do
+                v2:Destroy()
+                v2=nil
+             end
+          else
+              v:Destroy()
+              v=nil
+          end
        end
        Rayfield:Destroy()
    end,

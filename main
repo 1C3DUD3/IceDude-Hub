@@ -27,28 +27,34 @@ local Window = Rayfield:CreateWindow({
 local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/1C3DUD3/IceDude-Hub/refs/heads/main/esp"))()
 
 local storedAssets={
-esp={}
+   esp={}
 }
+
 local connections={}
+
 local espActivated={
-Universal={
-Player={Enabled=false,Color=Color3.fromRGB(255,255,255)}
+   Universal={
+      Player={Enabled=false,Color=Color3.fromRGB(255,255,255)}
+   }
 }
-}
+
 local values={
 HumSpeed = -1,
 HumJP = -1
 }
+
 local self=game.Players.LocalPlayee
 
 local v0 = Window:CreateTab("Forsaken", 4483362458)
+
+v0:CreateSection("Humanoid")
 
 v0:CreateInput({
    Name = "WalkSpeed (-1 to disable)",
    CurrentValue = "-1",
    PlaceholderText = "Input Placeholder",
    RemoveTextAfterFocusLost = false,
-   Flag = "Input1",
+   Flag = "ws",
    Callback = function(Text)
        values.HumSpeed = tonumber(Text)
    end,
@@ -60,7 +66,7 @@ v0:CreateInput({
    CurrentValue = "-1",
    PlaceholderText = "Input Placeholder",
    RemoveTextAfterFocusLost = false,
-   Flag = "Input1",
+   Flag = "jp",
    Callback = function(Text)
        values.HumJP = tonumber(Text)
    end,
@@ -71,7 +77,7 @@ v0:CreateInput({
    CurrentValue = "-1",
    PlaceholderText = "Input Placeholder",
    RemoveTextAfterFocusLost = false,
-   Flag = "Input1",
+   Flag = "jh",
    Callback = function(Text)
        values.HumJP = tonumber(Text)
    end,
@@ -83,7 +89,7 @@ v0:CreateSection("ESP")
 v0:CreateColorPicker({
     Name = "Player ESP Color",
     Color = Color3.fromRGB(255,255,255),
-    Flag = "ColorPicker1",
+    Flag = "espr",
     Callback = function(Value)
        espActivated.Universal.Player.Color=Value
     end
@@ -92,7 +98,7 @@ v0:CreateColorPicker({
 v0:CreateToggle({
    Name = "Player ESP",
    CurrentValue = false,
-   Flag = "Toggle1",
+   Flag = "ToggleESP",
    Callback = function(Value)
       espActivated.Universal.Player.Enabled=Value
    end,
@@ -100,6 +106,16 @@ v0:CreateToggle({
 
 v0:CreateSection("Misc.")
 
+v0:CreateInput({
+   Name = "Gravity (-1 to disable)",
+   CurrentValue = "-1",
+   PlaceholderText = "Input Placeholder",
+   RemoveTextAfterFocusLost = false,
+   Flag = "InputGravity",
+   Callback = function(Text)
+       workspace.Gravity = tonumber(Text)
+   end,
+})
 
 v0:CreateButton({
    Name = "Remove IceDude Exploits",

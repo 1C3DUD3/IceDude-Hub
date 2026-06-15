@@ -8,6 +8,7 @@ esp = function(obj,color,text)
       local h = Instance.new("Highlight",folder)
       h.FillColor = color
       h.Adornee = obj
+      h.OutlineTransparency=1
       local bb = Instance.new("BillboardGui",folder)
       bb.Name = "BB"
       bb.Size = UDim2.new(0,200,0,50)
@@ -18,6 +19,7 @@ esp = function(obj,color,text)
       label.BackgroundTransparency = 1
       label.TextScaled = true
       label.Size = UDim2.new(1,0,1,0)
+      label.TextColor3 = color
       return folder
    end
 end

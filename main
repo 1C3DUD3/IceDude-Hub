@@ -1,4 +1,12 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local s,e = pcall(function()
+   local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+end
+
+if not s then
+   local traceback = debug.traceback("RAYFIELD FAILED TO LOAD: ", 2)
+else
+   print("LOADED RAYFIELD!")
+end
 
 local Window = Rayfield:CreateWindow({
    Name = "IceDude exploits",

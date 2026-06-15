@@ -146,11 +146,11 @@ v0:CreateButton({
           if typeof(v) == "table" then
              for i2,v2 in pairs(v) do
                 v2:Destroy()
-                v2=nil
+                v[i2]=nil
              end
           else
               v:Destroy()
-              v=nil
+              storedAssets[i]=nil
           end
        end
        Rayfield:Destroy()

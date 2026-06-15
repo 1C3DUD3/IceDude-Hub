@@ -160,8 +160,8 @@ v0:CreateButton({
 connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     if espActivated.Universal.Player.Enabled == true then
        for _,v in pairs(game.Players:GetPlayers()) do
-          if not storedAssets.esp[v] and v~=self then
-             storedAssets.esp[v] = esp.esp(v.Character,espActivated.Universal.Player.Color,util.plrFullName(v).." | "..util.distance(self.Character,v.Character).."m")
+          if v~=self then
+             storedAssets.esp[v] = esp.esp(v.Character,espActivated.Universal.Player.Color,util.plrFullName(v).." | "..math.round(util.distance(self.Character,v.Character)).."m")
           end
        end
     else

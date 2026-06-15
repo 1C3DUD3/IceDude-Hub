@@ -7,11 +7,11 @@ displayMatchesUser = function(plr)
 end
 }
 
-module.plrFullName = function(plr)
+v0.plrFullName = function(plr)
    if v0.displayMatchesUser(plr) == true then
       return "@"..plr.Name
    else
-      return plr.DisplayName.."(@"..plr.Name..")
+      return plr.DisplayName.."(@"..plr.Name..")"
    end
 end
 

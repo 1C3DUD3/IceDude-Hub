@@ -4,6 +4,7 @@ end
 
 if not s then
    local traceback = debug.traceback("RAYFIELD FAILED TO LOAD: ", 2)
+   print(traceback)
 else
    print("LOADED RAYFIELD!")
 end

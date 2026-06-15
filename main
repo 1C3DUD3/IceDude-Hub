@@ -160,7 +160,7 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     if espActivated.Universal.Player.Enabled == true then
        for _,v in pairs(game.Players:GetPlayers()) do
           if not storedAssets.esp[v] then
-             storedAssets.esp[v] = esp.esp(v.Character,espActivated.Universal.Player.Color,v.DisplayName)
+             storedAssets.esp[v] = esp.esp(v.Character,espActivated.Universal.Player.Color,v.DisplayName.." | ")
           end
        end
     else

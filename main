@@ -248,7 +248,7 @@ v1:CreateColorPicker({
     Color = Color3.fromRGB(0,0,255),
     Flag = "v1-gen",
     Callback = function(Value)
-       espActivated.Forsaken.Item.Color=Value
+       espActivated.Forsaken.Generator.Color=Value
     end
 })
 
@@ -257,7 +257,7 @@ v1:CreateColorPicker({
     Color = Color3.fromRGB(0,0,0),
     Flag = "v1-noligen",
     Callback = function(Value)
-       espActivated.Forsaken.Item.Color=Value
+       espActivated.Forsaken.FakeGenerator.Color=Value
     end
 })
 
@@ -290,7 +290,7 @@ v1:CreateToggle({
 
 v1:CreateSection("Character")
 
-v0:CreateInput({
+v1:CreateInput({
    Name = "Speed Multiplier (-1 to disable)",
    CurrentValue = "-1",
    PlaceholderText = "Input Placeholder",
@@ -347,7 +347,7 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
    else
       for i,v in pairs(storedAssets.forsakenESP.survivor) do
          v:Destroy()
-         storedAssets.forsakenESP.survivor[v] = nil
+         storedAssets.forsakenESP.survivor[i] = nil
       end
    end
 
@@ -360,7 +360,7 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
    else
       for i,v in pairs(storedAssets.forsakenESP.killer) do
          v:Destroy()
-         storedAssets.forsakenESP.killer[v] = nil
+         storedAssets.forsakenESP.killer[i] = nil
       end
    end
 
@@ -375,7 +375,7 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
    else
       for i,v in pairs(storedAssets.forsakenESP.item) do
          v:Destroy()
-         storedAssets.forsakenESP.item[v] = nil
+         storedAssets.forsakenESP.item[i] = nil
       end
    end
 
@@ -392,7 +392,7 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
    else
       for i,v in pairs(storedAssets.forsakenESP.generator) do
          v:Destroy()
-         storedAssets.forsakenESP.generator[v] = nil
+         storedAssets.forsakenESP.generator[i] = nil
       end
    end
 
@@ -409,7 +409,7 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
    else
       for i,v in pairs(storedAssets.forsakenESP.taph) do
          v:Destroy()
-         storedAssets.forsakenESP.taph[v] = nil
+         storedAssets.forsakenESP.taph[i] = nil
       end
    end
 
@@ -422,7 +422,7 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
    else
       for i,v in pairs(storedAssets.forsakenESP.vee) do
          v:Destroy()
-         storedAssets.forsakenESP.vee[v] = nil
+         storedAssets.forsakenESP.vee[i] = nil
       end
    end
 

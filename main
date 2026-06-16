@@ -40,7 +40,7 @@ local util = loadstring(game:HttpGet("https://raw.githubusercontent.com/1C3DUD3/
 
 local storedAssets={
    esp={},
-   forsakenESP={survivor={},killer={}}
+   forsakenESP={survivor={},killer={},item={},generator={},taph={},vee={}}
 }
 
 local connections={}
@@ -51,13 +51,19 @@ local espActivated={
    },
    Forsaken = {
       Survivor={Enabled=false,Color=Color3.fromRGB(0,255,0), Asset = workspace.Players.Survivors},
-      Killer = {Enabled=false,Color = Color3.fromRGB(255,0,0), Asset = workspace.Players.Killers}
+      Killer = {Enabled=false,Color = Color3.fromRGB(255,0,0), Asset = workspace.Players.Killers},
+      Item = {Enabled=false,Color = Color3.fromRGB(255,165,0)},
+      Generator = {Enabled = false, Color = Color3.fromRGB(0,0,255)},
+      FakeGenerator = {Color = Color3.fromRGB(0,0,0)},
+      Trap = {Enabled = false, Color = Color3.fromRGB(75,75,75)},
+      Spray = {Enabled = false, Color = Color3.fromRGB(255,192,203)}
    }
 }
 
 local values={
-HumSpeed = -1,
-HumJP = -1
+   HumSpeed = -1,
+   HumJP = -1,
+   ForsakenSpeed = 1,
 }
 
 local self=game.Players.LocalPlayer
@@ -147,23 +153,32 @@ v0:CreateInput({
 v0:CreateButton({
    Name = "Remove IceDude Exploits",
    Callback = function()
-       for _,v in pairs(connections) do
-          v:Disconnect()
-          v = nil
-       end
+      for _,v in pairs(connections) do
+         v:Disconnect()
+         v = nil
+      end
 
-       for i,v in pairs(storedAssets) do
+      pcall(function()
+         for i,v in pairs(storedAssets) do
           if typeof(v) == "table" then
              for i2,v2 in pairs(v) do
-                v2:Destroy()
-                v[i2]=nil
+               if typeof(v) == "table" then
+                  for i3,v3 in pairs(v2) do
+                     v3:Destroy()
+                     v2[i3] = nil
+                  end
+               else
+                  v2:Destroy()
+                  v[i2]=nil
+               end
              end
           else
               v:Destroy()
               storedAssets[i]=nil
           end
        end
-       Rayfield:Destroy()
+      end
+      Rayfield:Destroy()
    end,
 })
 
@@ -171,6 +186,8 @@ v0:CreateButton({
 -- FORSAKEN
 
 local v1 = Window:CreateTab("Forsaken", 4483362458)
+
+v1:CreateSection("ESP")
 
 v1:CreateColorPicker({
     Name = "Survivor ESP Color",
@@ -208,6 +225,84 @@ v1:CreateToggle({
    end,
 })
 
+v1:CreateColorPicker({
+    Name = "Item ESP Color",
+    Color = Color3.fromRGB(255,165,0),
+    Flag = "v1-item",
+    Callback = function(Value)
+       espActivated.Forsaken.Item.Color=Value
+    end
+})
+
+v1:CreateToggle({
+   Name = "Item ESP",
+   CurrentValue = false,
+   Flag = "v1-itemE",
+   Callback = function(Value)
+      espActivated.Forsaken.Item.Enabled=Value
+   end,
+})
+
+v1:CreateColorPicker({
+    Name = "Generator ESP Color",
+    Color = Color3.fromRGB(0,0,255),
+    Flag = "v1-gen",
+    Callback = function(Value)
+       espActivated.Forsaken.Item.Color=Value
+    end
+})
+
+v1:CreateColorPicker({
+    Name = "Noli Generator ESP Color",
+    Color = Color3.fromRGB(0,0,0),
+    Flag = "v1-noligen",
+    Callback = function(Value)
+       espActivated.Forsaken.Item.Color=Value
+    end
+})
+
+v1:CreateToggle({
+   Name = "Generator ESP",
+   CurrentValue = false,
+   Flag = "v1-genE",
+   Callback = function(Value)
+      espActivated.Forsaken.Generator.Enabled=Value
+   end,
+})
+
+v1:CreateColorPicker({
+    Name = "Taph Trap ESP Color",
+    Color = Color3.fromRGB(0,0,0),
+    Flag = "v1-taphtrap",
+    Callback = function(Value)
+       espActivated.Forsaken.Trap.Color=Value
+    end
+})
+
+v1:CreateToggle({
+   Name = "Taph Trap ESP",
+   CurrentValue = false,
+   Flag = "v1-taphtrapE",
+   Callback = function(Value)
+      espActivated.Forsaken.Trap.Enabled=Value
+   end,
+})
+
+v1:CreateSection("Character")
+
+v0:CreateInput({
+   Name = "Speed Multiplier (-1 to disable)",
+   CurrentValue = "-1",
+   PlaceholderText = "Input Placeholder",
+   RemoveTextAfterFocusLost = false,
+   Flag = "forsaken-speed",
+   Callback = function(Text)
+       values.ForsakenSpeed = tonumber(Text)
+   end,
+})
+
+
+-- RENDER
 connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     if espActivated.Universal.Player.Enabled == true then
        for _,v in pairs(game.Players:GetPlayers()) do
@@ -236,7 +331,12 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
       end
     end
 
-   -- GAME SPECIFIC ESP
+
+
+
+
+
+   -- FORSAKEN
 
    if espActivated.Forsaken.Survivor.Enabled == true then
        for _,v in pairs(workspace.Players.Survivors:GetChildren()) do
@@ -262,5 +362,71 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
          v:Destroy()
          storedAssets.forsakenESP.killer[v] = nil
       end
+   end
+
+   if espActivated.Forsaken.Item.Enabled == true then
+      if workspace.Map.Ingame:FindFirstChild("Map") then
+         for _,v in pairs(workspace.Map.Ingame.Map:GetChildren()) do
+          if v:IsA("Tool") then
+            storedAssets.forsakenESP.item[v] = esp.esp(v,espActivated.Forsaken.Item.Color,v.Name.." | "..math.round(util.distance(self.Character,v)).."m")
+         end
+       end
+      end
+   else
+      for i,v in pairs(storedAssets.forsakenESP.item) do
+         v:Destroy()
+         storedAssets.forsakenESP.item[v] = nil
+      end
+   end
+
+   if espActivated.Forsaken.Generator.Enabled == true then
+      if workspace.Map.Ingame:FindFirstChild("Map") then
+         for _,v in pairs(workspace.Map.Ingame.Map:GetChildren()) do
+          if v.Name == "Generator" then
+            storedAssets.forsakenESP.generator[v] = esp.esp(v,espActivated.Forsaken.Generator.Color,v.Name.." ["..v.Progress.Value.."%] | "..math.round(util.distance(self.Character,v)).."m")
+         elseif v.Name == "FakeGenerator" then
+             storedAssets.forsakenESP.generator[v] = esp.esp(v,espActivated.Forsaken.FakeGenerator.Color,v.Name.." ["..v.Progress.Value.."%] | "..math.round(util.distance(self.Character,v)).."m")
+         end
+       end
+      end
+   else
+      for i,v in pairs(storedAssets.forsakenESP.generator) do
+         v:Destroy()
+         storedAssets.forsakenESP.generator[v] = nil
+      end
+   end
+
+   if espActivated.Forsaken.Trap.Enabled == true then
+      for _,v in pairs(workspace.Map.Ingame:GetChildren()) do
+         if v.Name == "SubspaceTripmine" then
+            storedAssets.forsakenESP.taph[v] = esp.esp(v,espActivated.Forsaken.Trap.Color,"Subspace Tripmine | "..math.round(util.distance(self.Character,v)).."m")
+         end
+
+         if string.match(v.Name,"TaphTripwire") then
+            storedAssets.forsakenESP.taph[v] = esp.esp(v,espActivated.Forsaken.Trap.Color,"Tripwire | "..math.round(util.distance(self.Character,v)).."m")
+         end
+      end
+   else
+      for i,v in pairs(storedAssets.forsakenESP.taph) do
+         v:Destroy()
+         storedAssets.forsakenESP.taph[v] = nil
+      end
+   end
+
+   if espActivated.Forsaken.Spray.Enabled == true then
+      for _,v in pairs(workspace.Map.Ingame:GetChildren()) do
+        if string.match(v.Name,"Spray") then
+            storedAssets.forsakenESP.vee[v] = esp.esp(v,espActivated.Forsaken.Spray.Color,"Spray | "..math.round(util.distance(self.Character,v)).."m")
+         end
+      end
+   else
+      for i,v in pairs(storedAssets.forsakenESP.vee) do
+         v:Destroy()
+         storedAssets.forsakenESP.vee[v] = nil
+      end
+   end
+
+   if values.ForsakenSpeed ~= -1 then
+      self.Character.SpeedMultipliers.Sprinting.Value = values.ForsakenSpeed
    end
 end)

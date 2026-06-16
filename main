@@ -39,7 +39,8 @@ local esp = loadstring(game:HttpGet("https://raw.githubusercontent.com/1C3DUD3/I
 local util = loadstring(game:HttpGet("https://raw.githubusercontent.com/1C3DUD3/IceDude-Hub/refs/heads/main/utility"))()
 
 local storedAssets={
-   esp={}
+   esp={},
+   forsakenESP={survivor={},killer={}}
 }
 
 local connections={}
@@ -50,7 +51,7 @@ local espActivated={
    },
    Forsaken = {
       Survivor={Enabled=false,Color=Color3.fromRGB(0,255,0), Asset = workspace.Players.Survivors},
-      Killer = {Enabled=false,Color = Colof3.fromRGB(255,0,0), Asset = workspace.Players.Killers}
+      Killer = {Enabled=false,Color = Color3.fromRGB(255,0,0), Asset = workspace.Players.Killers}
    }
 }
 
@@ -240,16 +241,26 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
    if espActivated.Forsaken.Survivor.Enabled == true then
        for _,v in pairs(workspace.Players.Survivors:GetChildren()) do
           if v~=self.Character then
-             storedAssets.esp[v] = esp.esp(v,espActivated.Forsaken.Survivor.Color,util.plrFullName(game.Players:GetPlayerFromCharacter(v)).." ["..v.Name.."] | "..math.round(util.distance(self.Character,v)).."m")
+             storedAssets.forsakenESP.survivor[v] = esp.esp(v,espActivated.Forsaken.Survivor.Color,util.plrFullName(game.Players:GetPlayerFromCharacter(v)).." ["..v.Name.."] | "..math.round(util.distance(self.Character,v)).."m")
           end
        end
+   else
+      for i,v in pairs(storedAssets.forsakenESP.survivor) do
+         v:Destroy()
+         storedAssets.forsakenESP.survivor[v] = nil
+      end
    end
 
    if espActivated.Forsaken.Killer.Enabled == true then
        for _,v in pairs(workspace.Players.Killers:GetChildren()) do
           if v~=self.Character then
-             storedAssets.esp[v] = esp.esp(v,espActivated.Forsaken.Killer.Color,util.plrFullName(game.Players:GetPlayerFromCharacter(v)).." ["..v.Name.."] | "..math.round(util.distance(self.Character,v)).."m")
+             storedAssets.forsakenESP.killer[v] = esp.esp(v,espActivated.Forsaken.Killer.Color,util.plrFullName(game.Players:GetPlayerFromCharacter(v)).." ["..v.Name.."] | "..math.round(util.distance(self.Character,v)).."m")
           end
        end
+   else
+      for i,v in pairs(storedAssets.forsakenESP.killer) do
+         v:Destroy()
+         storedAssets.forsakenESP.killer[v] = nil
+      end
    end
 end)

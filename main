@@ -50,8 +50,8 @@ local espActivated={
       Player={Enabled=false,Color=Color3.fromRGB(255,255,255)}
    },
    Forsaken = {
-      Survivor={Enabled=false,Color=Color3.fromRGB(0,255,0), Asset = workspace.Players.Survivors},
-      Killer = {Enabled=false,Color = Color3.fromRGB(255,0,0), Asset = workspace.Players.Killers},
+      Survivor={Enabled=false,Color=Color3.fromRGB(0,255,0)},
+      Killer = {Enabled=false,Color = Color3.fromRGB(255,0,0)},
       Item = {Enabled=false,Color = Color3.fromRGB(255,165,0)},
       Generator = {Enabled = false, Color = Color3.fromRGB(0,0,255)},
       FakeGenerator = {Color = Color3.fromRGB(0,0,0)},

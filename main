@@ -5,11 +5,10 @@ local s,e = pcall(function()
 end)
 
 if not s then
-   local traceback = debug.traceback("RAYFIELD FAILED TO LOAD: ", 2)
-   print(traceback)
+   warn("Failed to load IceDude Exploits")
    return
 else
-   print("LOADED RAYFIELD!")
+   print("Success! IceDude Exploits loading")
 end
 
 local Window = Rayfield:CreateWindow({
@@ -48,6 +47,10 @@ local connections={}
 local espActivated={
    Universal={
       Player={Enabled=false,Color=Color3.fromRGB(255,255,255)}
+   },
+   Forsaken = {
+      Survivor={Enabled=false,Color=Color3.fromRGB(0,255,0), Asset = workspace.Players.Survivors},
+      Killer = {Enabled=false,Color = Colof3.fromRGB(255,0,0), Asset = workspace.Players.Killers}
    }
 }
 
@@ -57,6 +60,12 @@ HumJP = -1
 }
 
 local self=game.Players.LocalPlayer
+
+
+
+
+
+-- UNIVERSAL
 
 local v0 = Window:CreateTab("Universal", 4483362458)
 
@@ -157,7 +166,46 @@ v0:CreateButton({
    end,
 })
 
+
+-- FORSAKEN
+
 local v1 = Window:CreateTab("Forsaken", 4483362458)
+
+v1:CreateColorPicker({
+    Name = "Survivor ESP Color",
+    Color = Color3.fromRGB(0,255,0),
+    Flag = "v1-surv",
+    Callback = function(Value)
+       espActivated.Forsaken.Survivor.Color=Value
+    end
+})
+
+v1:CreateToggle({
+   Name = "Survivor ESP",
+   CurrentValue = false,
+   Flag = "v1-survE",
+   Callback = function(Value)
+      espActivated.Forsaken.Survivor.Enabled=Value
+   end,
+})
+
+v1:CreateColorPicker({
+    Name = "Killer ESP Color",
+    Color = Color3.fromRGB(255,0,0),
+    Flag = "v1-killer",
+    Callback = function(Value)
+       espActivated.Forsaken.Killer.Color=Value
+    end
+})
+
+v1:CreateToggle({
+   Name = "Killer ESP",
+   CurrentValue = false,
+   Flag = "v1-killerE",
+   Callback = function(Value)
+      espActivated.Forsaken.Killer.Enabled=Value
+   end,
+})
 
 connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
     if espActivated.Universal.Player.Enabled == true then
@@ -168,8 +216,8 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
        end
     else
         for player, espObj in pairs(storedAssets.esp) do
-    espObj:Destroy()
-    storedAssets.esp[player] = nil
+          espObj:Destroy()
+          storedAssets.esp[player] = nil
         end
     end
 
@@ -186,4 +234,22 @@ connections.FrameCheck = game.RunService.RenderStepped:Connect(function()
           self.Character.Humanoid.JumpHeight = tonumber(values.HumJP)
       end
     end
+
+   -- GAME SPECIFIC ESP
+
+   if espActivated.Forsaken.Survivor.Enabled == true then
+       for _,v in pairs(workspace.Players.Survivors:GetChildren()) do
+          if v~=self.Character then
+             storedAssets.esp[v] = esp.esp(v,espActivated.Forsaken.Survivor.Color,util.plrFullName(game.Players:GetPlayerFromCharacter(v)).." ["..v.Name.."] | "..math.round(util.distance(self.Character,v)).."m")
+          end
+       end
+   end
+
+   if espActivated.Forsaken.Killer.Enabled == true then
+       for _,v in pairs(workspace.Players.Killers:GetChildren()) do
+          if v~=self.Character then
+             storedAssets.esp[v] = esp.esp(v,espActivated.Forsaken.Killer.Color,util.plrFullName(game.Players:GetPlayerFromCharacter(v)).." ["..v.Name.."] | "..math.round(util.distance(self.Character,v)).."m")
+          end
+       end
+   end
 end)
